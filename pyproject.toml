@@ -1,7 +1,7 @@
 [project]
 name = "repl-nix-workspace"
 version = "0.1.0"
-description = "Add your description here"
+description = "HDB Valuation Calculator"
 requires-python = ">=3.11"
 dependencies = [
     "colorama>=0.4.6",
