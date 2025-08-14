@@ -1,69 +1,61 @@
-# HDB Polynomial Price Calculator
+# 🏠 HDB Price Predicton
+## 🔥 Description
+The HDB Valuation Calculator builds on existing data sets to provide users with an accurate estimation of their flats resale value based on various factors. This will serve as a decision-making tool to help our users make better decisions regarding the resale value of their property, based on pre-existing market trends. 
 
-## Overview
+In this current market, it is difficult to make proper estimations for a flats resale price without having access to the data required to assess various factors. This can be troubling for newer homeowners who aren’t experienced in the field, leading to inaccurate valuations that can tank their overall return.
 
-The HDB Polynomial Price Calculator is an interactive command-line application that uses 4th degree polynomial regression to predict Housing Development Board (HDB) flat prices in Singapore. The system processes real estate data through advanced polynomial feature engineering to capture non-linear price relationships, providing more accurate valuations than traditional linear models. The application combines machine learning prediction with comprehensive data visualization and session management capabilities, all delivered through a rich terminal interface with color-coded market indicators.
+By centralizing and analysing publicly available resale transaction data, the HDB Valuation Calculator provides a transparent and data-driven solution. It empowers users with a clearer understanding of how factors influence resale value. This reduces reliance on guessing, ultimately promoting fairer transactions and better financial outcomes.
 
-## User Preferences
+## 🔨 Backend
+To understand the influence of each feature/input over the output obtained, we will be using Statistical Analysis & Exploratory Data Analysis to build a predictive model to calculate the resale price to a level of high accuracy. We will be building a regression model to carry out this requirement. 
 
-Preferred communication style: Simple, everyday language.
+There are initially a total of 9 features/inputs available from the dataset: 
 
-## Recent Changes
+- Date 
+- Town
+- Flat Type 
+- Block 
+- Street Name 
+- Story Range 
+- Floor Area 
+- Flat Model 
+- Lease Details
 
-**August 14, 2025**: 
-- Streamlined interface from 7 complex menu options to just 3 simple choices: Calculate Price, View History, Exit
-- Added automatic model setup on first use - users no longer need to manually train the model
-- Simplified input prompts with shorter, clearer labels and reduced verbose text
-- Fixed prediction accuracy with smart input validation (30-300 sqm floor area, 45-99 years lease)
-- Custom ASCII art header for professional branding
-- Curated flat_model selection to 6 essential options covering 85%+ of cases
-- All predictions now realistic: SGD 259K for 2-room, SGD 315K for 3-room, SGD 381K for 4-room
-- Enhanced model performance to R² 0.73 with proper 6-feature polynomial engineering
-- Much simpler workflow: users just select "Calculate Price" and get guided through streamlined inputs
-- Shows all 26 towns with numbered selection - users can type "8" instead of "CENTRAL AREA"
-- Automatically generates 4 personalized charts after each prediction: town analysis, flat type analysis, price vs area, and market heatmap
-- Clean results display with console clearing before showing prediction summary
+Out of these 9 features, we carried out testing to figure out which primary features we should focus on. This was done based on the dependency of each feature on the output. We landed on **Town, Flat Type, Storey Range, Floor Area, Flat Model, & Remaining Lease**
 
-## System Architecture
+## ✨ Features
+- 📈 **Price Prediction** – Polynomial regression model trained on historical resale data.
+- 🛠 **Data Processing** – Automated cleaning, transformation, and feature engineering.
+- 💻 **CLI Interface** – Simple command-line interaction for running predictions and analyses.
+- 📊 **Visualization** – Generate charts for market trends, flat type analysis, and price vs. floor area.
+- 📂 **Sample Dataset** – Included for quick testing and demonstration.
 
-### Machine Learning Architecture
+## 📂 Project Structure
+```text
+HDBPricePredictor
+├── main.py                    # Entry point for the application
+├── cli_interface.py           # Command-line interface
+├── data_processor.py          # Data cleaning and transformation
+├── hdb_polynomial_model.py    # Model training & prediction
+├── visualizer.py              # Chart and graph generation
+├── sample_data.csv            # Example dataset
+└── pyproject.toml             # Dependencies & build configuration
+```
 
-**Polynomial Regression Engine**: The core prediction system uses scikit-learn's 4th degree polynomial feature transformation combined with linear regression. This approach captures complex non-linear relationships between property features and prices that simpler models miss. The polynomial pipeline includes feature scaling and standardization to handle the expanded feature space effectively.
+## ⭐ Credits
+https://www.w3schools.com/python/python_ml_getting_started.asp  
+https://www.geeksforgeeks.org/  
+https://data36.com/polynomial-regression-python-scikit-learn/  
 
-**Advanced Data Processing**: The system implements conservative outlier removal (0.5% and 99.5% quantiles) specifically optimized for polynomial regression to prevent extreme values from distorting the model. Feature engineering includes categorical encoding for towns and flat types, with polynomial expansion creating interaction terms between all features.
+https://replit.com/  
+https://code.visualstudio.com/  
+https://jupyter.org/  
+https://colab.google/  
 
-**Model Validation Framework**: Comprehensive metrics tracking including R² score, Mean Absolute Error (MAE), and Root Mean Square Error (RMSE) to assess polynomial model performance. The system maintains separate training and testing datasets with proper validation protocols.
+Datasets from https://data.gov.sg/  
+Debugging assisted by https://replit.com/ai & https://chatgpt.com/ (_minor usage_)  
+Final release in https://github.com/  
 
-### Interface Architecture
-
-**Rich CLI Framework**: Built on the Rich library for enhanced terminal output with colored text, tables, panels, and progress indicators. The interface provides numbered menu navigation with input validation and error handling throughout the user journey.
-
-**Session Management**: Tracks multiple prediction sessions with market health indicators (Below Market/At Market/Above Market) based on percentile comparisons. Session data can be exported to CSV for further analysis.
-
-**Interactive Workflow**: Menu-driven interface supporting data loading, model training, individual predictions, performance analysis, visualization generation, and result export in a logical sequence.
-
-### Visualization Architecture
-
-**Non-Interactive Backend**: Uses matplotlib's 'Agg' backend to prevent display issues in terminal environments. All visualizations are automatically exported to the 'graphs' directory with organized file naming.
-
-**Comprehensive Chart Suite**: Generates price distribution analysis by town and flat type, scatter plots with polynomial trend lines, correlation heatmaps, and statistical distribution charts. Visualization generation includes progress feedback and export notifications.
-
-**Performance Optimization**: Implements data sampling for large datasets to maintain chart generation speed while preserving statistical representation.
-
-### File Organization Pattern
-
-**Modular Component Design**: Separates concerns across specialized modules - polynomial model logic, data processing, visualization, and CLI interface. Each component maintains clear interfaces and can be used independently.
-
-**Automatic Directory Management**: Creates 'graphs' and 'exports' directories automatically for organized output. Sample data generation fallback ensures the application runs even without pre-existing datasets.
-
-## External Dependencies
-
-**Core Machine Learning Stack**: scikit-learn for polynomial feature transformation and linear regression, pandas for data manipulation, numpy for numerical operations.
-
-**Visualization Libraries**: matplotlib and seaborn for chart generation with automatic export functionality.
-
-**Terminal Interface**: Rich library for enhanced CLI experience with colored output, tables, and interactive prompts.
-
-**Data Format Support**: CSV file processing for HDB real estate data input and session export functionality.
-
-**Cross-Platform Compatibility**: colorama for consistent colored output across different terminal environments.
+This project was developed by Souritra Samanta
+souritrasamanta@gmail.com
+Commonwealth Secondary School
