@@ -1,8 +1,4 @@
-#!/usr/bin/env python3
-"""
-HDB Polynomial Price Calculator - Main Entry Point
-Enhanced HDB valuation with 4th degree polynomial regression
-"""
+# SOURITRA SAMANTA (3C)
 
 import sys
 import os
@@ -65,3 +61,5 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+# SOURITRA SAMANTA (3C)
