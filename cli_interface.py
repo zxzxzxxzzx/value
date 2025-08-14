@@ -191,4 +191,41 @@ class SimplifiedHDBCalculatorCLI:
             input_table.add_row(display_key, str(value))  # Fill table with input values
         self.console.print(input_table)  # Print input table
 
-# SOURITRA SAMANTA (3C)
+    # View session predictions
+    def view_history(self):
+        if not self.session_predictions:
+            rprint("[bold yellow]⚠️ No previous predictions available[/bold yellow]")
+            return
+        history_table = Table(title="Session Predictions History")
+        history_table.add_column("Timestamp", style="cyan")
+        history_table.add_column("Town", style="green")
+        history_table.add_column("Flat Type", style="magenta")
+        history_table.add_column("Floor Area (sqm)", style="yellow")
+        history_table.add_column("Predicted Price (SGD)", style="green")
+        for record in self.session_predictions:
+            history_table.add_row(
+                str(record['timestamp']),
+                record['inputs'].get('town', ''),
+                record['inputs'].get('flat_type', ''),
+                str(record['inputs'].get('floor_area_sqm', '')),
+                f"${record['prediction']:,.2f}"
+            )
+        self.console.print(history_table)
+
+    # Run CLI itself
+    def run(self):
+        self.clear_screen()
+        self.display_banner()
+        self.load_and_train_model()
+        while True:
+            self.show_main_menu()
+            choice = Prompt.ask("[bold blue]Select an option[/bold blue]", choices=["1", "2", "3"])
+            if choice == "1":
+                self.predict_price()
+            elif choice == "2":
+                self.view_history()
+            elif choice == "3":
+                rprint("[bold green]✅ Exiting HDB Calculator. Bye![/bold green]")
+                break
+            else:
+                rprint("[bold red]❌ Invalid choice[/bold red]")
