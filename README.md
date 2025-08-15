@@ -59,3 +59,5 @@ Final release in https://github.com/
 This project was developed by Souritra Samanta
 souritrasamanta@gmail.com
 Commonwealth Secondary School
+
+**PS: The testing notebook that I used to create the polynomial model will be released in Version 1.1 of the project.**
