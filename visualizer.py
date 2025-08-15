@@ -10,7 +10,6 @@ from datetime import datetime
 
 class HDBVisualizer:
     def __init__(self):
-        """Initialize the HDB visualizer"""
         self.output_dir = 'graphs'
         os.makedirs(self.output_dir, exist_ok=True)
         
@@ -19,7 +18,6 @@ class HDBVisualizer:
         sns.set_palette("husl")
         
     def generate_prediction_summary_visuals(self, model, inputs: Dict, prediction: float, contributions: Dict):
-        """Generate 3 visualizations: chart, graph, and heatmap for prediction summary"""
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
         
         # 1. Feature Contribution Chart (Bar Chart)
@@ -39,7 +37,6 @@ class HDBVisualizer:
         ]
     
     def _create_feature_contribution_chart(self, contributions: Dict, timestamp: str):
-        """Create a bar chart showing feature contributions to the prediction"""
         plt.figure(figsize=(12, 8))
         
         # Prepare data for the chart
@@ -69,7 +66,6 @@ class HDBVisualizer:
         plt.close()
         
     def _create_price_comparison_graph(self, model, inputs: Dict, prediction: float, timestamp: str):
-        """Create a line graph comparing predicted price with market trends"""
         plt.figure(figsize=(14, 8))
         
         # Get similar properties for comparison
@@ -124,7 +120,6 @@ class HDBVisualizer:
         plt.close()
         
     def _create_market_analysis_heatmap(self, model, inputs: Dict, timestamp: str):
-        """Create a heatmap showing price patterns across different flat types and towns"""
         plt.figure(figsize=(16, 10))
         
         df = model.df
