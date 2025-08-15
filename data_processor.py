@@ -5,8 +5,6 @@ import numpy as np
 from typing import Dict, List, Tuple, Optional, Any
 
 class HDBDataProcessor:
-    """Handles HDB data processing and feature engineering for polynomial regression"""
-    
     def __init__(self):
         pass
     
@@ -59,7 +57,6 @@ class HDBDataProcessor:
         return cleaned_df
     
     def validate_input_data(self, inputs: Dict) -> Tuple[bool, List[str]]:
-        """Validate user input data for polynomial regression"""
         errors = []
         
         # Check required fields (flat_model restored with limited options)
