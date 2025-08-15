@@ -4,11 +4,14 @@ import pandas as pd
 import numpy as np
 from typing import Dict, List, Tuple, Optional, Any
 
-class HDBDataProcessor:    
+class HDBDataProcessor:
+    """Handles HDB data processing and feature engineering for polynomial regression"""
+    
     def __init__(self):
-        self.processed_data = None
+        pass
     
     def clean_data(self, df: pd.DataFrame) -> pd.DataFrame:
+        """Clean and preprocess HDB data"""
         cleaned_df = df.copy()
         
         # Remove duplicates
@@ -28,7 +31,7 @@ class HDBDataProcessor:
         # Clean price data (remove extreme outliers for polynomial regression)
         if 'resale_price' in cleaned_df.columns:
             price_col = cleaned_df['resale_price']
-            Q1 = price_col.quantile(0.005)  
+            Q1 = price_col.quantile(0.005)  # More conservative for polynomial
             Q3 = price_col.quantile(0.995)
             
             outliers_mask = (price_col < Q1) | (price_col > Q3)
@@ -53,7 +56,6 @@ class HDBDataProcessor:
                 cleaned_df[col] = cleaned_df[col].str.upper().str.strip()
         
         print(f"✅ Data cleaning completed. Final dataset: {len(cleaned_df)} records")
-        self.processed_data = cleaned_df
         return cleaned_df
     
     def validate_input_data(self, inputs: Dict) -> Tuple[bool, List[str]]:
@@ -68,15 +70,13 @@ class HDBDataProcessor:
             if field not in inputs or inputs[field] is None:
                 errors.append(f"Missing required field: {field}")
         
-        # Validate numerical ranges (stricter for polynomial regression)
+        # Basic validation
         if 'floor_area_sqm' in inputs:
-            area = inputs['floor_area_sqm']
-            if not isinstance(area, (int, float)) or area < 30 or area > 250:
+            if inputs['floor_area_sqm'] < 30 or inputs['floor_area_sqm'] > 250:
                 errors.append("Floor area must be between 30 and 250 sqm")
         
         if 'remaining_lease' in inputs:
-            lease = inputs['remaining_lease']
-            if not isinstance(lease, int) or lease < 40 or lease > 99:
+            if inputs['remaining_lease'] < 40 or inputs['remaining_lease'] > 99:
                 errors.append("Remaining lease must be between 40 and 99 years")
         
         return len(errors) == 0, errors
