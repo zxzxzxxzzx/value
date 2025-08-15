@@ -29,7 +29,6 @@ class SimplifiedHDBCalculatorCLI:
 
     # Show the cool banner thingy (it's called ascii art)
     def display_banner(self):
-        """Display application banner"""
         banner = """
  _   _ ____  ____   __     __    _             _   _             
 | | | |  _ \| __ )  \ \   / /_ _| |_   _  __ _| |_(_) ___  _ __  
@@ -237,10 +236,13 @@ class SimplifiedHDBCalculatorCLI:
             self.show_main_menu()
             choice = Prompt.ask("[bold blue]Select an option[/bold blue]", choices=["1", "2", "3"])
             if choice == "1":
+                self.clear_screen()
                 self.predict_price()
             elif choice == "2":
+                self.clear_screen()
                 self.view_history()
             elif choice == "3":
+                self.clear_screen()
                 rprint("[bold green]✅ Exiting HDB Calculator. Bye![/bold green]")
                 break
             else:
