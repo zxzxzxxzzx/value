@@ -204,7 +204,7 @@ class HDBPolynomialPriceModel:
     def get_model_metrics(self) -> Dict[str, float]:
         return self.model_metrics.copy()
 
-def get_polynomial_equation_info(self) -> Dict[str, Any]:
+    def get_polynomial_equation_info(self) -> Dict[str, Any]:
         if not self.is_trained:
             return {
                 'degree': self.polynomial_degree,
