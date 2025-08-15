@@ -5,7 +5,6 @@ import os
 from cli_interface import SimplifiedHDBCalculatorCLI
 
 def main():
-    """Main entry point for the HDB Polynomial Price Calculator"""
     try:
         print("🔄 Starting HDB Polynomial Price Calculator...")
         
