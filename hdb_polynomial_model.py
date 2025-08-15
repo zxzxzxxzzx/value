@@ -19,12 +19,7 @@ class HDBPolynomialPriceModel:
         """Initialize the HDB polynomial price prediction model"""
         self.polynomial_pipeline = None
         self.label_encoders = {}
-        self.scaler = StandardScaler()
         self.df = None
-        self.X_train = None
-        self.X_test = None
-        self.y_train = None
-        self.y_test = None
         self.feature_names = []
         self.is_trained = False
         self.model_metrics = {}
@@ -103,26 +98,26 @@ class HDBPolynomialPriceModel:
             self.create_polynomial_pipeline()
             
             # Split the data
-            self.X_train, self.X_test, self.y_train, self.y_test = train_test_split(
+            X_train, X_test, y_train, y_test = train_test_split(
                 X, y, test_size=0.2, random_state=42
             )
             
             # Train the polynomial model
             print(f"🔄 Training {self.polynomial_degree}th degree polynomial regression model...")
-            self.polynomial_pipeline.fit(self.X_train, self.y_train)
+            self.polynomial_pipeline.fit(X_train, y_train)
             
             # Calculate predictions
-            y_pred_train = self.polynomial_pipeline.predict(self.X_train)
-            y_pred_test = self.polynomial_pipeline.predict(self.X_test)
+            y_pred_train = self.polynomial_pipeline.predict(X_train)
+            y_pred_test = self.polynomial_pipeline.predict(X_test)
             
             # Calculate metrics
             self.model_metrics = {
-                'train_r2': r2_score(self.y_train, y_pred_train),
-                'test_r2': r2_score(self.y_test, y_pred_test),
-                'train_mae': mean_absolute_error(self.y_train, y_pred_train),
-                'test_mae': mean_absolute_error(self.y_test, y_pred_test),
-                'train_rmse': np.sqrt(mean_squared_error(self.y_train, y_pred_train)),
-                'test_rmse': np.sqrt(mean_squared_error(self.y_test, y_pred_test)),
+                'train_r2': r2_score(y_train, y_pred_train),
+                'test_r2': r2_score(y_test, y_pred_test),
+                'train_mae': mean_absolute_error(y_train, y_pred_train),
+                'test_mae': mean_absolute_error(y_test, y_pred_test),
+                'train_rmse': np.sqrt(mean_squared_error(y_train, y_pred_train)),
+                'test_rmse': np.sqrt(mean_squared_error(y_test, y_pred_test)),
                 'n_samples': len(X),
                 'n_features': len(self.feature_names),
                 'polynomial_degree': self.polynomial_degree
@@ -191,11 +186,6 @@ class HDBPolynomialPriceModel:
         
         return prediction, feature_contributions
 
-    def load_and_train_model(self):
-        """Load data and train the polynomial model"""
-        self.load_data()
-        self.train_model()
-
     def get_available_towns(self) -> List[str]:
         """Get list of available towns"""
         if self.df is not None:
@@ -217,35 +207,5 @@ class HDBPolynomialPriceModel:
     def get_model_metrics(self) -> Dict[str, float]:
         """Get polynomial model performance metrics"""
         return self.model_metrics.copy()
-    
-    def get_polynomial_equation_info(self) -> Dict[str, Any]:
-        """Get polynomial equation information and coefficients"""
-        if not self.is_trained:
-            return {"error": "Model not trained"}
-        
-        try:
-            # Get the linear regression model from the pipeline
-            linear_model = self.polynomial_pipeline.named_steps['linear_reg']
-            poly_features = self.polynomial_pipeline.named_steps['poly_features']
-            
-            # Get feature names from polynomial features
-            feature_names = poly_features.get_feature_names_out(self.feature_names)
-            
-            # Get coefficients
-            coefficients = linear_model.coef_
-            intercept = linear_model.intercept_
-            
-            return {
-                "degree": self.polynomial_degree,
-                "n_features": len(feature_names),
-                "n_coefficients": len(coefficients),
-                "intercept": intercept,
-                "coefficients": coefficients.tolist(),
-                "feature_names": feature_names.tolist(),
-                "r2_score": self.model_metrics.get('test_r2', 0),
-                "equation_complexity": "4th degree polynomial with interaction terms"
-            }
-        except Exception as e:
-            return {"error": f"Failed to extract equation info: {str(e)}"}
 
 # SOURITRA SAMANTA (3C)
