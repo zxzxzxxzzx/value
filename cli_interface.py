@@ -33,7 +33,7 @@ class SimplifiedHDBCalculatorCLI:
 | | | |  _ \| __ )  \ \   / /_ _| |_   _  __ _| |_(_) ___  _ __  
 | |_| | | | |  _ \   \ \ / / _` | | | | |/ _` | __| |/ _ \| '_ \ 
 |  _  | |_| | |_) |   \ V / (_| | | |_| | (_| | |_| | (_) | | | |
-|_|_|_|____/|____/     \_/ \__,_|_|\__,_|\__,_|\__|_|\___/|_| |_|
+|_| |_|____/|____/     \_/ \__,_|_|\__,_|\__,_|\__|_|\___/|_| |_|
  / ___|__ _| | ___ _   _| | __ _| |_ ___  _ __                   
 | |   / _` | |/ __| | | | |/ _` | __/ _ \| '__|                  
 | |__| (_| | | (__| |_| | | (_| | || (_) | |                     
@@ -65,10 +65,10 @@ class SimplifiedHDBCalculatorCLI:
             summary_table = Table(title="Model Training Summary")  # Create summary table
             summary_table.add_column("Metric", style="cyan")
             summary_table.add_column("Value", style="green")
-            summary_table.add_row("Polynomial Degree", str(polynomial_info['polynomial_degree']))
+            summary_table.add_row("Polynomial Degree", str(polynomial_info['degree']))
             summary_table.add_row("Training Samples", f"{metrics['n_samples']:,}")
             summary_table.add_row("Original Features", str(metrics['n_features']))
-            summary_table.add_row("Polynomial Features", f"{polynomial_info['n_polynomial_features']:,}")
+            summary_table.add_row("Polynomial Features", f"{polynomial_info['n_features']:,}")
             summary_table.add_row("Training R²", f"{metrics['train_r2']:.4f}")
             summary_table.add_row("Testing R²", f"{metrics['test_r2']:.4f}")
             summary_table.add_row("Test MAE", f"SGD ${metrics['test_mae']:,.2f}")
@@ -206,6 +206,14 @@ class SimplifiedHDBCalculatorCLI:
         self.clear_screen()
         self.display_banner()
         self.load_and_train_model()
+        
+        # Wait 5 seconds then clear screen for cleaner interface
+        import time
+        rprint("\n[bold cyan]🎉 Ready to use! Starting interface in 5 seconds...[/bold cyan]")
+        time.sleep(5)
+        self.clear_screen()
+        self.display_banner()
+        
         while True:
             self.show_main_menu()
             choice = Prompt.ask("[bold blue]Select an option[/bold blue]", choices=["1", "2", "3"])
@@ -218,4 +226,5 @@ class SimplifiedHDBCalculatorCLI:
                 break
             else:
                 print("❌ Invalid choice")
-    
+
+# SOURITRA SAMANTA (3C)
