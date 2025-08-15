@@ -1,7 +1,4 @@
-"""
-HDB Price Prediction Model with 4th Degree Polynomial Regression
-Handles data processing, polynomial feature transformation, model training, and price prediction
-"""
+# SOURITRA SAMANTA (3C)
 
 import pandas as pd
 import numpy as np
@@ -12,7 +9,6 @@ from sklearn.preprocessing import LabelEncoder, PolynomialFeatures, StandardScal
 from sklearn.metrics import r2_score, mean_absolute_error, mean_squared_error
 from sklearn.pipeline import Pipeline
 from typing import Dict, Any, List, Tuple
-import pickle
 import os
 
 # Suppress sklearn warnings for cleaner output
@@ -143,54 +139,12 @@ class HDBPolynomialPriceModel:
             print(f"❌ Error training polynomial model: {e}")
             raise
 
-    def get_polynomial_equation_info(self) -> Dict[str, Any]:
-        """Get polynomial equation coefficients and information"""
-        if not self.is_trained:
-            raise ValueError("Model not trained. Call train_model() first.")
-        
-        # Get the linear regression step from the pipeline
-        linear_reg = self.polynomial_pipeline.named_steps['linear_reg']
-        poly_features = self.polynomial_pipeline.named_steps['poly_features']
-        
-        coefficients = linear_reg.coef_
-        intercept = linear_reg.intercept_
-        
-        # Get feature names from polynomial features
-        feature_names = poly_features.get_feature_names_out(self.feature_names)
-        
-        return {
-            'intercept': intercept,
-            'coefficients': coefficients,
-            'feature_names': feature_names[:10],  # Show first 10 features
-            'n_polynomial_features': len(coefficients),
-            'polynomial_degree': self.polynomial_degree
-        }
-
-    def predict_most_likely_flat_model(self, inputs: Dict[str, Any]) -> str:
-        """Predict the most likely flat_model based on flat_type and other characteristics"""
-        if not hasattr(self, 'df') or self.df is None:
-            return "Standard"  # Most common 2-room model
-        
-        # Filter data by flat_type to find most common model
-        flat_type = inputs.get('flat_type', '').upper().strip()
-        filtered_data = self.df[self.df['flat_type'] == flat_type]
-        
-        if len(filtered_data) > 0:
-            # Return most common flat_model for this specific flat_type
-            most_common = filtered_data['flat_model'].mode()
-            if len(most_common) > 0:
-                return most_common.iloc[0]
-        
-        # Fallback to overall most common model
-        overall_common = self.df['flat_model'].mode()
-        return overall_common.iloc[0] if len(overall_common) > 0 else "Standard"
+    
 
     def predict_price(self, inputs: Dict[str, Any]) -> Tuple[float, Dict[str, float]]:
-        """Predict HDB price using polynomial regression with automatic flat_model detection"""
+        """Predict HDB price using polynomial regression"""
         if not self.is_trained:
             raise ValueError("Model not trained. Call train_model() first.")
-        
-        # flat_model is now provided by user interface
         
         # Prepare input data
         input_data = []
@@ -260,28 +214,38 @@ class HDBPolynomialPriceModel:
             return sorted(self.df['storey_range'].unique().tolist())
         return []
 
-
-
     def get_model_metrics(self) -> Dict[str, float]:
         """Get polynomial model performance metrics"""
         return self.model_metrics.copy()
-
-    def export_model(self, filepath: str = 'exports/polynomial_model.pkl'):
-        """Export the trained polynomial model"""
+    
+    def get_polynomial_equation_info(self) -> Dict[str, Any]:
+        """Get polynomial equation information and coefficients"""
         if not self.is_trained:
-            raise ValueError("Model not trained. Call train_model() first.")
+            return {"error": "Model not trained"}
         
-        os.makedirs('exports', exist_ok=True)
-        
-        model_data = {
-            'pipeline': self.polynomial_pipeline,
-            'label_encoders': self.label_encoders,
-            'feature_names': self.feature_names,
-            'metrics': self.model_metrics,
-            'polynomial_degree': self.polynomial_degree
-        }
-        
-        with open(filepath, 'wb') as f:
-            pickle.dump(model_data, f)
-        
-        print(f"✅ Model exported to {filepath}")
+        try:
+            # Get the linear regression model from the pipeline
+            linear_model = self.polynomial_pipeline.named_steps['linear_reg']
+            poly_features = self.polynomial_pipeline.named_steps['poly_features']
+            
+            # Get feature names from polynomial features
+            feature_names = poly_features.get_feature_names_out(self.feature_names)
+            
+            # Get coefficients
+            coefficients = linear_model.coef_
+            intercept = linear_model.intercept_
+            
+            return {
+                "degree": self.polynomial_degree,
+                "n_features": len(feature_names),
+                "n_coefficients": len(coefficients),
+                "intercept": intercept,
+                "coefficients": coefficients.tolist(),
+                "feature_names": feature_names.tolist(),
+                "r2_score": self.model_metrics.get('test_r2', 0),
+                "equation_complexity": "4th degree polynomial with interaction terms"
+            }
+        except Exception as e:
+            return {"error": f"Failed to extract equation info: {str(e)}"}
+
+# SOURITRA SAMANTA (3C)
