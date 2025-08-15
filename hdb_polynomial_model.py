@@ -187,25 +187,39 @@ class HDBPolynomialPriceModel:
         return prediction, feature_contributions
 
     def get_available_towns(self) -> List[str]:
-        """Get list of available towns"""
         if self.df is not None:
             return sorted(self.df['town'].unique().tolist())
         return []
 
     def get_available_flat_types(self) -> List[str]:
-        """Get list of available flat types"""
         if self.df is not None:
             return sorted(self.df['flat_type'].unique().tolist())
         return []
 
     def get_available_storey_ranges(self) -> List[str]:
-        """Get list of available storey ranges"""
         if self.df is not None:
             return sorted(self.df['storey_range'].unique().tolist())
         return []
 
     def get_model_metrics(self) -> Dict[str, float]:
-        """Get polynomial model performance metrics"""
         return self.model_metrics.copy()
 
+def get_polynomial_equation_info(self) -> Dict[str, Any]:
+        if not self.is_trained:
+            return {
+                'degree': self.polynomial_degree,
+                'n_features': 0,
+                'is_trained': False
+            }
+        
+        poly_features = self.polynomial_pipeline.named_steps['poly_features']
+        n_polynomial_features = poly_features.n_output_features_
+        
+        return {
+            'degree': self.polynomial_degree,
+            'n_features': n_polynomial_features,
+            'is_trained': self.is_trained,
+            'original_features': len(self.feature_names)
+        }
+    
 # SOURITRA SAMANTA (3C)
