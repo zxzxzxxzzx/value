@@ -9,7 +9,6 @@ class HDBDataProcessor:
         pass
     
     def clean_data(self, df: pd.DataFrame) -> pd.DataFrame:
-        """Clean and preprocess HDB data"""
         cleaned_df = df.copy()
         
         # Remove duplicates
