@@ -12,13 +12,15 @@ import pandas as pd
 
 # Import the custom .py modules that we created
 from hdb_polynomial_model import HDBPolynomialPriceModel  
-from data_processor import HDBDataProcessor  
+from data_processor import HDBDataProcessor
+from visualizer import HDBVisualizer  
 
 class SimplifiedHDBCalculatorCLI:
     def __init__(self):
         self.console = Console()  # Rich console for printing
         self.model = HDBPolynomialPriceModel()  # Instantiate HDB model
         self.processor = HDBDataProcessor()  # Instantiate data processor
+        self.visualizer = HDBVisualizer()  # Instantiate visualizer
         self.session_predictions = []  # Store session predictions
 
     # Makes console clear when needed
@@ -90,7 +92,24 @@ class SimplifiedHDBCalculatorCLI:
                     print(f"❌ {error}") 
                 return
             prediction, contributions = self.model.predict_price(inputs)  # Make prediction
-            self.display_prediction_results(inputs, prediction, contributions) 
+            self.display_prediction_results(inputs, prediction, contributions)
+            
+            # Generate visualizations automatically
+            rprint("\n[bold cyan]📊 Generating visualization charts...[/bold cyan]")
+            with self.console.status("[bold green]Creating charts, graphs, and heatmaps..."):
+                generated_files = self.visualizer.generate_prediction_summary_visuals(
+                    self.model, inputs, prediction, contributions
+                )
+            
+            # Display generated files info
+            files_panel = Panel(
+                f"[bold green]✅ Generated Files:[/bold green]\n" +
+                "\n".join([f"📁 {file}" for file in generated_files]),
+                title="[bold blue]Visualization Files Created[/bold blue]",
+                border_style="green"
+            )
+            self.console.print(files_panel)
+            
             self.session_predictions.append({
                 'inputs': inputs.copy(),
                 'prediction': prediction,
