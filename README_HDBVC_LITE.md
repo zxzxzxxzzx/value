@@ -39,7 +39,7 @@ The backend uses **statistical analysis and exploratory data analysis (EDA)** to
   - **Flat Model**
   - **Remaining Lease**
 
-The final model is a **4th-degree polynomial regression** trained on historical resale transactions.
+The final model is a **3rd-degree polynomial regression** trained on historical resale transactions.
 
 ---
 
