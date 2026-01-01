@@ -32,14 +32,14 @@ Out of these 9 features, we carried out testing to figure out which primary feat
 
 ## 📂 Project Structure
 ```text
-HDBPricePredictor
+HDBVC
 ├── main.py                    # Entry point for the application
 ├── cli_interface.py           # Command-line interface
 ├── data_processor.py          # Data cleaning and transformation
 ├── hdb_polynomial_model.py    # Model training & prediction
 ├── visualizer.py              # Chart and graph generation
 ├── sample_data.csv            # Example dataset
-└── pyproject.toml             # Dependencies & build configuration
+└── /graphs/                   # Generated visualization files
 ```
 
 ## ⭐ Credits
