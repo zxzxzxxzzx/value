@@ -1,4 +1,4 @@
-# 🏠 HDB Price Predicton
+# 🏠 HDB Valuation Calculator
 ## 🔥 Description
 The HDB Valuation Calculator builds on existing data sets to provide users with an accurate estimation of their flats resale value based on various factors. This will serve as a decision-making tool to help our users make better decisions regarding the resale value of their property, based on pre-existing market trends. 
 
